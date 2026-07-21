@@ -16,14 +16,16 @@ jobs:
         with:
           node-version: 22
 
+      - run: npm install
+
       - name: Lint HTML
-        run: npx --yes htmlhint index.html
+        run: npx htmlhint index.html
 
       - name: Lint CSS
-        run: npx --yes stylelint styles.css
+        run: npx stylelint styles.css
 
       - name: Lint JS
-        run: npx --yes eslint scripts.js
+        run: npx eslint scripts.js
 
   deploy:
     needs: lint
