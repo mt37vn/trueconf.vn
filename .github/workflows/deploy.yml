@@ -15,18 +15,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-
-      - run: npm ci
 
       - name: Lint HTML
-        run: npx htmlhint index.html
+        run: npx --yes htmlhint index.html
 
       - name: Lint CSS
-        run: npx stylelint styles.css
+        run: npx --yes stylelint styles.css
 
       - name: Lint JS
-        run: npx eslint scripts.js
+        run: npx --yes eslint scripts.js
 
   deploy:
     needs: lint
