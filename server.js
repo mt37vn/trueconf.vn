@@ -76,6 +76,14 @@ const chatToSocket = new Map();
 const clients = new Map();
 const socketToMeta = new Map();
 
+const recentMessages = new Map();
+setInterval(() => {
+  const cutoff = Date.now() - 5000;
+  for (const [key, ts] of recentMessages) {
+    if (ts < cutoff) recentMessages.delete(key);
+  }
+}, 10000);
+
 const contactLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
@@ -230,6 +238,11 @@ trueconf.onChatMessage = (payload) => {
   // Normalize sender comparison: TrueConf may report ID as "bot" or "bot@domain"
   const senderName = senderId ? senderId.split('@')[0] : null;
   if (!textMessage || senderName === BOT_USER || senderId === BOT_USER) return;
+
+  const dedupKey = `${chatId}:${senderId}:${textMessage}`;
+  const now = Date.now();
+  if (recentMessages.get(dedupKey) > now - 3000) return;
+  recentMessages.set(dedupKey, now);
 
   const targetSocketId = chatToSocket.get(chatId);
 
