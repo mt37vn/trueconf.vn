@@ -23,16 +23,10 @@ if (isConfigured) {
         auth: {
             user: MAIL_USER,
             pass: MAIL_PASS
-        }
-    });
-
-    // Verify connection on startup
-    transporter.verify((error, success) => {
-        if (error) {
-            console.error('[MAILER] Connection error:', error.message);
-        } else {
-            console.log('[MAILER] Server is ready to take our messages');
-        }
+        },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000
     });
 } else {
     console.warn('[MAILER] SMTP credentials not fully configured. Mail sending will be disabled.');
@@ -94,7 +88,7 @@ ${message || 'N/A'}
         return { success: true, messageId: info.messageId };
     } catch (error) {
         console.error('[MAILER] Send error:', error.message);
-        return { success: false, error: error.message };
+        return { success: false, error: 'Email service temporarily unavailable' };
     }
 }
 
