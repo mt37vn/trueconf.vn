@@ -3,8 +3,6 @@ name: CI/CD
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   lint:
@@ -16,7 +14,7 @@ jobs:
         with:
           node-version: 22
 
-      - run: npm install
+      - run: npm ci
 
       - name: Lint HTML
         run: npx htmlhint index.html
@@ -32,23 +30,27 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Deploy to server via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          exclude: |
-            **/.git*/
-            **/.git*/**
-            **/node_modules/**
-            **/.github/**
-            **/package.json
-            **/package-lock.json
-            **/eslint.config.js
-            **/.htmlhintrc
-            **/.stylelintrc.json
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.DEPLOY_PASS }}
+          script: |
+            set -e
+            cd /opt/trueconf-landing
+
+            echo "=== Pulling latest code ==="
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "=== Rebuilding Docker image ==="
+            docker compose build
+
+            echo "=== Restarting container ==="
+            docker compose up -d
+
+            echo "=== Cleaning up old images ==="
+            docker image prune -f
+
+            echo "=== Done ==="
