@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 
 const sanitize = (val) => val ? val.trim().replace(/[`'"]+/g, '') : '';
@@ -88,6 +90,11 @@ ${message || 'N/A'}
         return { success: true, messageId: info.messageId };
     } catch (error) {
         console.error('[MAILER] Send error:', error.message);
+        const backupDir = path.join(__dirname, 'backup_contacts');
+        fs.mkdirSync(backupDir, { recursive: true });
+        const filename = `contact_${Date.now()}.json`;
+        fs.writeFileSync(path.join(backupDir, filename), JSON.stringify(data, null, 2));
+        console.log('[MAILER] Contact saved to', filename);
         return { success: false, error: 'Email service temporarily unavailable' };
     }
 }
