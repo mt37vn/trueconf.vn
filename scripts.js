@@ -100,6 +100,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const BLOCKED_EMAIL_DOMAINS = [
+        'gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'yahoo.com.vn',
+        'live.com', 'msn.com', 'aol.com', 'icloud.com', 'me.com',
+        'protonmail.com', 'proton.me', 'mail.ru', 'yandex.com', 'yandex.ru'
+    ];
+
+    function isValidBusinessEmail(email) {
+        const domain = email.split('@')[1]?.toLowerCase();
+        return domain && !BLOCKED_EMAIL_DOMAINS.includes(domain);
+    }
+
     // Form Handling
     const leadForm = document.getElementById('lead-form');
     if (leadForm) {
@@ -108,8 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData(leadForm);
             const data = Object.fromEntries(formData.entries());
 
-            // Mock Webhook submission
-            console.log('Submitting lead form to webhook...', data);
+            if (!isValidBusinessEmail(data.email)) {
+                alert('Vui lòng sử dụng email công việc (doanh nghiệp), không chấp nhận email cá nhân như Gmail, Hotmail.');
+                return;
+            }
 
             // Add visual feedback
             const submitBtn = leadForm.querySelector('button[type="submit"]');
@@ -119,21 +132,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // TrueConf WebChat Contact API Integration
-                const response = await fetch('https://trueconf-webchat.onrender.com/api/contact', {
+                const response = await fetch('/api/contact', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
+                        company: data.company,
                         name: data.name,
+                        position: data.position,
                         email: data.email,
+                        phone: data.phone,
+                        scale: data.scale,
                         subject: `New Lead from ${data.company}`,
-                        message: `
-                            Phone: ${data.phone}
-                            Company: ${data.company}
-                            Scale: ${data.scale}
-                            Message: ${data.message}
-                        `
+                        message: data.message
                     })
                 });
 

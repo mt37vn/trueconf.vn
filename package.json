@@ -4,10 +4,20 @@
   "version": "1.0.0",
   "description": "TrueConf Vietnam website",
   "scripts": {
+    "start": "node server.js",
     "lint:html": "htmlhint index.html",
     "lint:css": "stylelint styles.css",
     "lint:js": "eslint scripts.js",
     "lint": "npm run lint:html && npm run lint:css && npm run lint:js"
+  },
+  "dependencies": {
+    "axios": "^1.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
+    "nodemailer": "^9.0.3",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "eslint": "^9.0.0",

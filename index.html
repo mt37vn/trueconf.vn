@@ -7,7 +7,7 @@
     <title>TrueConf Vietnam - Hội nghị truyền hình 4K siêu bảo mật</title>
     <meta name="description"
         content="Hệ thống họp trực tuyến On-premise số 1 thế giới. Bảo mật tuyệt đối, hình ảnh 4K, hỗ trợ đến 1.000 điểm cầu. Đăng ký dùng thử miễn phí ngay!">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="noindex, nofollow"> <!-- Requested for conversion landing pages -->
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://trueconf-webchat.onrender.com/widget.css">
+    <link rel="stylesheet" href="widget.css">
 
 
     <!-- GA4 / GTM Placeholder -->
@@ -42,7 +42,7 @@
         <div class="logo">
             <img src="assets/logo.svg" alt="TrueConf Vietnam" style="height: 40px;">
         </div>
-        <a href="index.html#register" class="cta-sticky" id="sticky-cta">Dùng thử miễn phí</a>
+        <a href="#register" class="cta-sticky" id="sticky-cta">Dùng thử miễn phí</a>
     </header>
     <div style="height: 80px;"></div> <!-- Spacer for fixed header -->
 
@@ -56,7 +56,7 @@
                 <img id="hero-gui" src="assets/hero-gui.png" alt="TrueConf Server GUI"
                     style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
             </div>
-            <a href="index.html#register" class="btn-primary">Nhận License dùng thử 30 ngày</a>
+            <a href="#register" class="btn-primary">Nhận License dùng thử 30 ngày</a>
         </div>
     </section>
 
@@ -247,8 +247,16 @@
         <div class="form-container">
             <form id="lead-form">
                 <div class="form-group">
+                    <label for="company">Tên tổ chức/doanh nghiệp *</label>
+                    <input type="text" id="company" name="company" required placeholder="CÔNG TY CP TRUECONF">
+                </div>
+                <div class="form-group">
                     <label for="name">Họ và tên *</label>
                     <input type="text" id="name" name="name" required placeholder="Nguyễn Văn A">
+                </div>
+                <div class="form-group">
+                    <label for="position">Chức vụ *</label>
+                    <input type="text" id="position" name="position" required placeholder="Giám đốc IT">
                 </div>
                 <div class="form-group">
                     <label for="email">Email công việc *</label>
@@ -257,10 +265,6 @@
                 <div class="form-group">
                     <label for="phone">Số điện thoại *</label>
                     <input type="tel" id="phone" name="phone" required placeholder="090x xxx xxx">
-                </div>
-                <div class="form-group">
-                    <label for="company">Tên tổ chức/doanh nghiệp *</label>
-                    <input type="text" id="company" name="company" required placeholder="CÔNG TY CP TRUECONF">
                 </div>
                 <div class="form-group">
                     <label for="scale">Quy mô điểm cầu dự kiến</label>
@@ -318,7 +322,7 @@
         <h2>Sẵn sàng nâng tầm hội nghị cho tổ chức của bạn?</h2>
         <p style="margin: 1.5rem 0 2.5rem; font-size: 1.2rem;">Gia nhập hàng nghìn tổ chức đang tin dùng TrueConf mỗi
             ngày.</p>
-        <a href="index.html#register" class="btn-primary">Bắt đầu trải nghiệm miễn phí</a>
+        <a href="#register" class="btn-primary">Bắt đầu trải nghiệm miễn phí</a>
     </section>
 
     <footer>
@@ -329,11 +333,9 @@
 
 
     <!-- TrueConf Web Chat Widget -->
-    <script>
-        window.TRUECONF_CHAT_BACKEND = 'wss://trueconf-webchat.onrender.com';
-    </script>
-    <script src="https://trueconf-webchat.onrender.com/widget.js"></script>
-    <script src="scripts.js"></script>
+    <script>window.TRUECONF_CHAT_BACKEND = 'ws://localhost:3001';</script>
+    <script src="widget.js"></script>
+    <script src="scripts.js?v=2"></script>
 </body>
 
 </html>
